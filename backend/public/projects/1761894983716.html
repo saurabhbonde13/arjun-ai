@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wanderlust Chronicles - A travel blog sharing adventures, tips, and stories from around the world">
+    <title>Wanderlust Chronicles - Travel Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23667eea" width="1200" height="600"/><circle fill="%23764ba2" opacity="0.3" cx="200" cy="100" r="150"/><circle fill="%23f093fb" opacity="0.2" cx="900" cy="400" r="200"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 8rem 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #f093fb;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .blog-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+
+        .about-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .about-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            flex-shrink: 0;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .newsletter h2 {
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 2rem auto 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        .newsletter button {
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .newsletter button:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 2rem 20px;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Wanderlust Chronicles</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Explore the World with Us</h1>
+        <p>Discover amazing destinations, travel tips, and inspiring stories</p>
+        <a href="#destinations" class="btn">Start Reading</a>
+    </section>
+
+    <main class="container">
+        <section id="destinations">
+            <h2 class="section-title">Latest Adventures</h2>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">🏔️</div>
+                    <div class="blog-content">
+                        <span class="blog-category">Adventure</span>
+                        <h3 class="blog-title">Hiking Through the Swiss Alps</h3>
+                        <div class="blog-meta">December 15, 2023 • 5 min read</div>
+                        <p class="blog-excerpt">
+                            Experience the breathtaking beauty of the Swiss Alps with our comprehensive guide to the best hiking trails, from beginner-friendly paths to challenging mountain climbs.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">🏖️</div>
+                    <div class="blog-content">
+                        <span class="blog-category">Beach</span>
+                        <h3 class="blog-title">Hidden Beaches of Thailand</h3>
+                        <div class="blog-meta">December 10, 2023 • 7 min read</div>
+                        <p class="blog-excerpt">
+                            Escape the tourist crowds and discover Thailand's secret coastal paradises. We share our favorite hidden beaches that offer crystal-clear waters and pristine sands.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">🏛️</div>
+                    <div class="blog-content">
+                        <span class="blog-category">Culture</span>
+                        <h3 class="blog-title">A Week in Historic Rome</h3>
+                        <div class="blog-meta">December 5, 2023 • 6 min read</div>
+                        <p class="blog-excerpt">
+                            Walk through history in the Eternal City. From the Colosseum to hidden trattorias, discover the best way to experience Rome's rich culture and incredible cuisine.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">🌸</div>
+                    <div class="blog-content">
+                        <span class="blog-category">Nature</span>
+                        <h3 class="blog-title">Cherry Blossoms in Japan</h3>
+                        <div class="blog-meta">November 28, 2023 • 8 min read</div>
+                        <p class="blog-excerpt">
+                            Experience the magic of sakura season with our ultimate guide to viewing cherry blossoms across Japan, including the best locations and perfect timing for your visit.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">🌆</div>
+                    <div class="blog-content">
+                        <span class="blog-category">City Life</span>
+                        <h3 class="blog-title">New York City on a Budget</h3>
+                        <div class="blog-meta">November 20, 2023 • 5 min read</div>
+                        <p class="blog-excerpt">
+                            Explore the Big Apple without breaking the bank. Our insider tips will help you enjoy world-class attractions, food, and entertainment while staying within your budget.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">🐘</div>
+                    <div class="blog-content">
+                        <span class="blog-category">Wildlife</span>
+                        <h3 class="blog-title">Safari Adventures in Kenya</h3>
+                        <div class="blog-meta">November 15, 2023 • 9 min read</div>
+                        <p class="blog-excerpt">
+                            Witness the incredible wildlife of Africa up close. From the Great Migration to intimate encounters with the Big Five, here's everything you need to know for your safari.
+                        </p>
+                        <a href="#" class="read-more">Read More →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <div class="about-image">✈️</div>
+                <div class="about-text">
+                    <h2>About Wanderlust Chronicles</h2>
+                    <p>Welcome to Wanderlust Chronicles, your passport to inspiring travel stories and practical adventure guides. We're passionate travelers who believe that exploring our world enriches our lives and broadens our perspectives.</p>
+                    <p>Since 2020, we've been sharing our experiences from over 50 countries, offering honest reviews, budget-friendly tips, and cultural insights to help you plan your

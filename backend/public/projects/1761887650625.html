@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PowerFit Gym - Transform your body and mind with professional fitness training, state-of-the-art equipment, and expert guidance.">
+    <title>PowerFit Gym - Transform Your Body & Mind</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6b35;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b35;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23222" width="1200" height="600"/><path fill="%23333" d="M0 300L50 280L100 320L150 290L200 310L250 285L300 305L350 295L400 315L450 285L500 300L550 290L600 310L650 295L700 305L750 290L800 310L850 285L900 305L950 295L1000 310L1050 290L1100 305L1150 295L1200 310V600H0Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            margin-top: 70px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff6b35;
+            color: #fff;
+            padding: 1rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1.4s ease;
+            border: 2px solid #ff6b35;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,107,53,0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #ff6b35;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: #f8f8f8;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #ff6b35;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff6b35;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .programs {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 5rem 2rem;
+        }
+
+        .programs .section-title {
+            color: #fff;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .program-card {
+            background: #2d2d2d;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .program-card:hover {
+            transform: scale(1.05);
+        }
+
+        .program-image {
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .program-content {
+            padding: 2rem;
+        }
+
+        .program-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #ff6b35;
+        }
+
+        .program-content p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .program-content ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-content ul li {
+            padding: 0.5rem 0;
+            color: #aaa;
+        }
+
+        .program-content ul li::before {
+            content: '✓ ';
+            color: #ff6b35;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .trainers {
+            background: #f8f8f8;
+        }
+
+        .trainer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .trainer-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .trainer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .trainer-image {
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #fff;
+        }
+
+        .trainer-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .trainer-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .trainer-info .specialty {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .trainer-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 5rem 2rem;
+        }
+
+        .contact .section-title {
+            color: #fff;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: #ff6b35;
+        }
+
+        .contact-form {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #444;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 5px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            background: #ff6b35;
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background: #ff8c42;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.4);
+        }
+
+        .schedule {
+            background: #fff;
+        }
+
+        .schedule-table {
+            width: 100%;
+            margin-top: 3rem;
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .schedule-table th {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .schedule-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .schedule-table tr:hover {
+            background: #f8f8f8;
+        }
+
+        .class-name {
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        footer {
+            background: #0d0d0d;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ff6b35;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .schedule-table {
+                font-size: 0.9rem;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">PowerFit</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#programs">Programs</a></li>
+                <li><a href="#trainers">Trainers</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Body & Mind</h1>
+            <p>Achieve Your Fitness Goals With Expert Guidance</p>
+            <a href="#contact" class="cta-button">Start Your Journey</a>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2 class="section-title">Why Choose PowerFit

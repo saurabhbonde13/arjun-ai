@@ -1,0 +1,518 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Cucina - Italian Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23654321" width="1200" height="600"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            height: 100vh;
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #d4af37;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #d4af37;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .btn:hover {
+            background: #b8941f;
+            transform: translateY(-3px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            background: #f9f9f9;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #d4af37 0%, #8b7355 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #654321;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        /* Menu Section */
+        .menu {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .menu h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #654321;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-item {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item h3 {
+            font-size: 1.5rem;
+            color: #654321;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .menu-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .menu-category {
+            display: inline-block;
+            background: #d4af37;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 5%;
+            background: #f9f9f9;
+        }
+
+        .gallery h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #654321;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background: linear-gradient(135deg, #654321, #8b7355);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Reservations Section */
+        .reservations {
+            padding: 5rem 5%;
+            background: #654321;
+            color: white;
+        }
+
+        .reservations h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #d4af37;
+        }
+
+        .reservation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #b8941f;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background: white;
+        }
+
+        .contact h2 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #654321;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 2rem;
+        }
+
+        .contact-item i {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #654321;
+        }
+
+        .contact-item p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #d4af37;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #d4af37;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        .copyright {
+            border-top: 1px solid #444;
+            padding-top: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .menu h2,
+            .gallery h2,
+            .contact h2,
+            .reservations h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <nav id="navbar">
+            <div class="logo">Bella Cucina</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#reservations">Reservations</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="hero" id="home">
+            <h1>Bella Cucina</h1>
+            <p>Authentic Italian Cuisine in the Heart of the City</p>
+            <a href="#reservations" class="btn">Book a Table</a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image">🍝</div>
+        <div class="about-content">
+            <h2>Our Story</h2>
+            <p>Welcome to Bella Cucina, where tradition meets innovation. For over 25 years, we've been serving authentic Italian cuisine prepared with love and the finest ingredients.</p>
+            <p>Our chef, Giovanni Rossi, brings recipes passed down through generations, combined with modern culinary techniques to create unforgettable dining experiences.</p>
+            <p>Every dish tells a story, and we invite you to be part of ours. From our family to yours, Buon Appetito!</p>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <h2>Our Menu</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h3>Margherita Pizza</h3>
+                    <span class="price">$16</span>
+                </div>
+                <p>Fresh mozzarella, San Marzano tomatoes, basil, and extra virgin olive oil on our homemade dough.</p>
+                <span class="menu-category">Pizza</span>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h3>Spaghetti Carbonara</h3>
+                    <span class="price">$18</span>
+                </div>
+                <p>Classic Roman pasta with guanciale, eggs, Pecorino Romano, and black pepper.</p>
+                <span class="menu-category">Pasta</span>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h3>Osso Buco</h3>
+                    <span class="price">$32</span>
+                </div>
+                <p>Braised veal shanks in white wine with vegetables, served with saffron risotto.</p>
+                <span class="menu-category">Main Course</span>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h3>Caprese Salad</h3>
+                    <span class="price">$12</span>
+                </div>
+                <p>Fresh mozzarella, heirloom tomatoes, basil, and balsamic reduction.</p>
+                <span class="menu-category">Appetizer</span>
+            </div>
+
+            <div class="menu-item">
+                <div class="menu-item-header">
+                    <h3>Risotto ai Funghi</h3>
+                    <span class="price">$22</span>
+                </div>
+                <p>Creamy Arborio rice with wild mushrooms, Parmigiano-Reggiano, and truffle oil.</p>
+                <span class="menu-category">Pasta</span>
+            </div>
+
+            <div

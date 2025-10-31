@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandview Hotel - Luxury Accommodation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23234567" width="1200" height="600"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #ffd700;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #ffd700;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffed4e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #234567;
+        }
+
+        .rooms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .room-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .room-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .room-info {
+            padding: 20px;
+        }
+
+        .room-info h3 {
+            margin-bottom: 10px;
+            color: #234567;
+        }
+
+        .room-info p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .price {
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .amenities {
+            background: #f8f9fa;
+            padding: 60px 20px;
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .amenity-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .amenity-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .contact {
+            background: #234567;
+            color: white;
+            padding: 60px 20px;
+        }
+
+        .contact-info {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        footer {
+            background: #1a2a3a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">GRANDVIEW HOTEL</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#rooms">Rooms</a></li>
+                <li><a href="#amenities">Amenities</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="hero" id="home">
+            <h1>Welcome to Grandview Hotel</h1>
+            <p>Experience Luxury and Comfort in the Heart of the City</p>
+            <a href="#rooms" class="btn">Book Now</a>
+        </div>
+    </header>
+
+    <div class="container" id="rooms">
+        <h2 class="section-title">Our Rooms</h2>
+        <div class="rooms">
+            <div class="room-card">
+                <div class="room-image">Standard Room</div>
+                <div class="room-info">
+                    <h3>Standard Room</h3>
+                    <p>Comfortable and cozy room perfect for solo travelers or couples. Features modern amenities and city views.</p>
+                    <div class="price">$99/night</div>
+                    <a href="#contact" class="btn">Reserve</a>
+                </div>
+            </div>
+
+            <div class="room-card">
+                <div class="room-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">Deluxe Suite</div>
+                <div class="room-info">
+                    <h3>Deluxe Suite</h3>
+                    <p>Spacious suite with separate living area, luxury bathroom, and stunning panoramic views of the skyline.</p>
+                    <div class="price">$199/night</div>
+                    <a href="#contact" class="btn">Reserve</a>
+                </div>
+            </div>
+
+            <div class="room-card">
+                <div class="room-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">Presidential Suite</div>
+                <div class="room-info">
+                    <h3>Presidential Suite</h3>
+                    <p>Ultimate luxury with private balcony, jacuzzi, dining area, and personalized concierge service.</p>
+                    <div class="price">$399/night</div>
+                    <a href="#contact" class="btn">Reserve</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="amenities" id="amenities">
+        <h2 class="section-title">Hotel Amenities</h2>
+        <div class="amenities-grid">
+            <div class="amenity-item">
+                <div class="amenity-icon">🏊</div>
+                <h3>Swimming Pool</h3>
+                <p>Rooftop infinity pool with stunning views</p>
+            </div>
+            <div class="amenity-item">
+                <div class="amenity-icon">🍽️</div>
+                <h3>Fine Dining</h3>
+                <p>Award-winning restaurant and bar</p>
+            </div>
+            <div class="amenity-item">
+                <div class="amenity-icon">💪</div>
+                <h3>Fitness Center</h3>
+                <p>State-of-the-art gym open 24/7</p>
+            </div>
+            <div class="amenity-item">
+                <div class="amenity-icon">🧖</div>
+                <h3>Spa & Wellness</h3>
+                <p>Full-service spa and massage therapy</p>
+            </div>
+            <div class="amenity-item">
+                <div class="amenity-icon">📶</div>
+                <h3>Free WiFi</h3>
+                <p>High-speed internet throughout</p>
+            </div>
+            <div class="amenity-item">
+                <div class="amenity-icon">🚗</div>
+                <h3>Parking</h3>
+                <p>Complimentary valet parking</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title" style="color: white;">Contact Us</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <h3>Address</h3>
+                <p>123 Luxury Avenue<br>Downtown District<br>New York, NY 10001</p>
+            </div>
+            <div class="contact-item">
+                <h3>Phone</h3>
+                <p>Reception: +1 (555) 123-4567<br>Reservations: +1 (555) 123-4568</p>
+            </div>
+            <div class="contact-item">
+                <h3>Email</h3>
+                <p>info@grandviewhotel.com<br>reservations@grandviewhotel.com</p>
+            </div>
+            <div class="contact-item">
+                <h3>Hours</h3>
+                <p>Check-in: 3:00 PM<br>Check-out: 11:00 AM<br>Front Desk: 24/7</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Grandview Hotel. All rights reserved. | Privacy Policy | Terms of Service</p>
+    </footer>
+</body>
+</html>

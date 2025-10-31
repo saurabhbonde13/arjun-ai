@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Bites - Food Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23ffd89b" width="1200" height="400"/><path fill="%23ff6b6b" opacity="0.3" d="M0,200 Q300,150 600,200 T1200,200 L1200,400 L0,400 Z"/></svg>') center/cover;
+            text-align: center;
+            padding: 5rem 2rem;
+            color: #333;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .recipe-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+
+        .about-section {
+            background: white;
+            padding: 3rem 0;
+            margin: 3rem 0;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .newsletter {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 2rem;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🍳 Delicious Bites</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#recipes">Recipes</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Welcome to Delicious Bites</h1>
+        <p>Discover amazing recipes and culinary adventures</p>
+        <a href="#recipes" class="btn">Explore Recipes</a>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title" id="recipes">Featured Recipes</h2>
+        <div class="recipe-grid">
+            <article class="recipe-card">
+                <div class="recipe-image">🍝</div>
+                <div class="recipe-content">
+                    <h3>Creamy Pasta Carbonara</h3>
+                    <div class="recipe-meta">⏱️ 30 mins | 👤 4 servings</div>
+                    <p>A classic Italian dish with a silky egg-based sauce, crispy bacon, and perfectly cooked pasta. Simple yet elegant!</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image">🍰</div>
+                <div class="recipe-content">
+                    <h3>Chocolate Lava Cake</h3>
+                    <div class="recipe-meta">⏱️ 25 mins | 👤 2 servings</div>
+                    <p>Decadent chocolate cake with a molten center that flows like lava. The perfect dessert for special occasions!</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image">🥗</div>
+                <div class="recipe-content">
+                    <h3>Mediterranean Quinoa Bowl</h3>
+                    <div class="recipe-meta">⏱️ 20 mins | 👤 2 servings</div>
+                    <p>A healthy and colorful bowl packed with quinoa, fresh vegetables, feta cheese, and a zesty lemon dressing.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image">🍕</div>
+                <div class="recipe-content">
+                    <h3>Homemade Margherita Pizza</h3>
+                    <div class="recipe-meta">⏱️ 45 mins | 👤 3 servings</div>
+                    <p>Nothing beats a homemade pizza! Fresh mozzarella, basil, and tomato sauce on a crispy, golden crust.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image">🍜</div>
+                <div class="recipe-content">
+                    <h3>Spicy Thai Ramen</h3>
+                    <div class="recipe-meta">⏱️ 35 mins | 👤 4 servings</div>
+                    <p>A fusion bowl combining Japanese ramen with Thai spices. Coconut milk, lemongrass, and chili create magic!</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image">🥐</div>
+                <div class="recipe-content">
+                    <h3>Buttery French Croissants</h3>
+                    <div class="recipe-meta">⏱️ 3 hours | 👤 12 servings</div>
+                    <p>Master the art of making flaky, buttery croissants at home. Perfect for weekend baking projects!</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+        </div>
+
+        <section class="newsletter">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get the latest recipes and cooking tips delivered to your inbox!</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </section>
+    </div>
+
+    <section class="about-section" id="about">
+        <div class="about-content">
+            <h2 class="section-title">About Delicious Bites</h2>
+            <p>Welcome to Delicious Bites, where passion for food meets creativity in the kitchen! We're dedicated to sharing recipes that inspire home cooks of all skill levels.</p>
+            <p>From quick weeknight dinners to elaborate weekend feasts, our blog features tested recipes, helpful cooking tips, and beautiful food photography to guide you on your culinary journey.</p>
+            <p>Join our community of food lovers and discover the joy of creating delicious meals for yourself and your loved ones!</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="social-links">
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Pinterest">📌</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+        </div>
+        <p>&copy; 2024 Delicious Bites. All rights reserved.</p>
+        <p>Made with ❤️ and lots of butter</p>
+    </footer>
+</body>
+</html>
