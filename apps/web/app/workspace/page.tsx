@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +9,7 @@ export default function WorkspacePage() {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  
 
   const handleBuild = async () => {
     if (!prompt.trim()) {
