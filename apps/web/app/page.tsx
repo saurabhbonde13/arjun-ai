@@ -6,12 +6,8 @@ import { redirect } from "next/navigation";
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
 
-  // Redirect based on auth
-  if (!session) {
-    redirect("/login");
-  } else {
-    redirect("/workspace");
-  }
+  if (!session) redirect("/login");
+  else redirect("/workspace");
 
   return (
     <main className="flex h-screen items-center justify-center bg-[#0B1120] text-white">
