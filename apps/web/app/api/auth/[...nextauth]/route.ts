@@ -1,8 +1,9 @@
-import NextAuth from "next-auth";
+// apps/web/app/api/auth/[...nextauth]/route.ts
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -15,32 +16,30 @@ const handler = NextAuth({
   ],
 
   pages: {
-    signIn: "/login",  // 👈 Login page
-    signOut: "/login", // 👈 Logout always goes here
-    error: "/login",   // 👈 Error page fallback
+    signIn: "/login",
+    signOut: "/login",
+    error: "/login",
   },
 
   callbacks: {
-    // ✅ Always force redirect to /workspace after login
     async redirect({ url, baseUrl }) {
-      // if logging in, go to workspace
       if (url.includes("/login") || url === baseUrl) {
         return `${baseUrl}/workspace`;
       }
-      // if logging out, go to login
       if (url.includes("/logout")) {
         return `${baseUrl}/login`;
       }
       return url.startsWith(baseUrl) ? url : `${baseUrl}/workspace`;
     },
 
-    // ✅ Preserve session object
-    async session({ session, token }) {
+    async session({ session }) {
       return session;
     },
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+// ✅ Export the NextAuth handler with the same config
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

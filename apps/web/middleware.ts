@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl;
 
-  // Allow public assets and login page
+  // Allow access to public routes
   if (
     pathname.startsWith("/login") ||
     pathname.startsWith("/_next") ||
@@ -20,13 +20,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Redirect unauthenticated users to /login
+  // Redirect unauthenticated users
   if (!token) {
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Allow authenticated users
+  // Authenticated → allow
   return NextResponse.next();
 }
 
