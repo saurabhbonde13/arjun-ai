@@ -57,7 +57,7 @@ export default function WorkspaceShell() {
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/health");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}');
         setIsConnected(res.ok);
       } catch {
         setIsConnected(false);
@@ -108,7 +108,7 @@ export default function WorkspaceShell() {
     setController(abortCtrl);
 
     try {
-      const res = await fetch("http://localhost:5000/api/generate", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/generate', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, firstPrompt: isNewProject }),
@@ -129,7 +129,7 @@ export default function WorkspaceShell() {
       await simulateTyping("✅ Generation complete! Preview and code are ready.");
       setCode(data.result);
       setDisplayedCode(data.result);
-      setIframeSrc(`http://localhost:5000/${data.filePath}?t=${Date.now()}`);
+      setIframeSrc(`${process.env.NEXT_PUBLIC_API_URL}/${data.filePath}?t=${Date.now()}`);
       setSelectedFile(data.filePath);
 
       const title = projectTitle || prompt;
@@ -155,7 +155,7 @@ export default function WorkspaceShell() {
       localStorage.setItem("arjunai_history", JSON.stringify(updatedHistory));
       setHistory(updatedHistory);
 
-      await fetch("http://localhost:5000/api/save-chat", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/save-chat', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ file: data.filePath, chat: updatedChat }),
@@ -199,11 +199,11 @@ export default function WorkspaceShell() {
     setSelectedFile(item.file);
     setProjectTitle(item.prompt);
     setLogs([`📂 Loaded project: ${item.prompt}`]);
-    setIframeSrc(`http://localhost:5000/${item.file}?t=${Date.now()}`);
+    setIframeSrc(`${process.env.NEXT_PUBLIC_API_URL}/${item.file}?t=${Date.now()}`);
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/project/chat?file=${encodeURIComponent(item.file)}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/project/chat?file=${encodeURIComponent(item.file)}`
       );
       const data = await res.json();
       if (data.chat?.length) setMessages(data.chat);
@@ -214,7 +214,7 @@ export default function WorkspaceShell() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/${item.file}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${item.file}`);
       const html = await res.text();
       setCode(html);
       setDisplayedCode(html);
@@ -245,7 +245,7 @@ export default function WorkspaceShell() {
         localStorage.setItem("arjunai_history", JSON.stringify(updatedHistory));
         setHistory(updatedHistory);
 
-        await fetch("http://localhost:5000/api/save-chat", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/save-chat', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ file: selectedFile, chat: messages }),

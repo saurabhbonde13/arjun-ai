@@ -60,7 +60,7 @@ if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
 useEffect(() => {
 const checkConnection = async () => {
 try {
-const res = await fetch("[http://localhost:5000/api/health](http://localhost:5000/api/health)");
+const res = await fetch("[`${process.env.NEXT_PUBLIC_API_URL}/api/health`](http://`${process.env.NEXT_PUBLIC_API_URL}/api/health`);
 setIsConnected(res.ok);
 } catch {
 setIsConnected(false);
@@ -107,7 +107,7 @@ controllerRef.current = new AbortController();
 const { signal } = controllerRef.current;
 
 try {
-  const res = await fetch("http://localhost:5000/api/generate", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/health`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ prompt }),
@@ -133,7 +133,7 @@ try {
   setTypedCode("");
   startTyping(html);
 
-  setIframeSrc(`http://localhost:5000/${data.filePath}?t=${Date.now()}`);
+  setIframeSrc(`http://`${process.env.NEXT_PUBLIC_API_URL}/api/health`/${data.filePath}?t=${Date.now()}`);
   startClaudeTyping("✅ Website generated successfully!");
 
   const newHistory = [
@@ -198,7 +198,8 @@ handleGenerate(reply);
 };
 
 const handleDelete = async (file: string) => {
-await fetch("[http://localhost:5000/api/delete](http://localhost:5000/api/delete)", {
+await fetch("[http://`${process.env.NEXT_PUBLIC_API_URL}/api/delete'](`${process.env.NEXT_PUBLIC_API_URL}/api/delete')
+, {
 method: "POST",
 headers: { "Content-Type": "application/json" },
 body: JSON.stringify({ filePath: file }),
@@ -263,7 +264,7 @@ onClick={() => router.push("/workspace")}
           >
             <span
               className="cursor-pointer truncate"
-              onClick={() => setIframeSrc(`http://localhost:5000/${p.file}`)}
+              onClick={() => setIframeSrc(`${process.env.NEXT_PUBLIC_API_URL}`)}
               title={p.prompt}
             >
               {shortenTitle(p.prompt)}
