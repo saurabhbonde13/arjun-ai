@@ -1,38 +1,6 @@
-// apps/web/middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+export { default } from "next-auth/middleware";
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-
-  const { pathname } = req.nextUrl;
-
-  // Public routes
-  const isPublic =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/api/auth") ||
-    pathname.startsWith("/_next") ||
-    pathname.includes(".") ||
-    pathname === "/favicon.ico";
-
-  if (isPublic) return NextResponse.next();
-
-  // If no token → redirect
-  if (!token) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
-  }
-
-  return NextResponse.next();
-}
-
-// Apply to all routes except public assets
+// Protect both workspace and builder routes
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/workspace", "/builder"],
 };

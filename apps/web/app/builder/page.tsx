@@ -1,8 +1,8 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState, useRef } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Image from "next/image";
 import {
 Loader2,
@@ -20,6 +20,14 @@ Square,
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function BuilderPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 // ✅ Auth session guard
 const { data: session, status } = useSession();
 const router = useRouter();
