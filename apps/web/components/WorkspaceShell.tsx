@@ -23,8 +23,16 @@ import {
 
 export default function WorkspaceShell() {
   const router = useRouter();
+
+  // ✅ Backend base URL (env first, fallback to localhost)
+  const API_BASE =
+    (process.env.NEXT_PUBLIC_API_URL as string | undefined) ||
+    "http://localhost:5000";
+
   const [prompt, setPrompt] = useState("");
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    []
+  );
   const [isTyping, setIsTyping] = useState(false);
   const [typingMessage, setTypingMessage] = useState("");
   const [displayedCode, setDisplayedCode] = useState("");
@@ -35,7 +43,9 @@ export default function WorkspaceShell() {
   const [isConnected, setIsConnected] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [projectTitle, setProjectTitle] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"preview" | "code" | "editor">("preview");
+  const [viewMode, setViewMode] = useState<"preview" | "code" | "editor">(
+    "preview"
+  );
   const [controller, setController] = useState<AbortController | null>(null);
   const [projectKey, setProjectKey] = useState(0);
   const [showDeploy, setShowDeploy] = useState(false);
@@ -57,7 +67,7 @@ export default function WorkspaceShell() {
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}');
+        const res = await fetch(API_BASE + "/api/health");
         setIsConnected(res.ok);
       } catch {
         setIsConnected(false);
@@ -66,10 +76,12 @@ export default function WorkspaceShell() {
     check();
     const i = setInterval(check, 4000);
     return () => clearInterval(i);
-  }, []);
+  }, [API_BASE]);
 
-  const addLog = (msg: string) =>
-    setLogs((prev) => [...prev, `${new Date().toLocaleTimeString()} ${msg}`]);
+  // ✅ Logger (safe string concatenation)
+  const addLog = (msg: string) => {
+    setLogs((prev) => [...prev, new Date().toLocaleTimeString() + " " + msg]);
+  };
 
   // ✅ Logout
   const handleLogout = async () => {
@@ -108,7 +120,7 @@ export default function WorkspaceShell() {
     setController(abortCtrl);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/generate', {
+      const res = await fetch(API_BASE + "/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, firstPrompt: isNewProject }),
@@ -129,7 +141,10 @@ export default function WorkspaceShell() {
       await simulateTyping("✅ Generation complete! Preview and code are ready.");
       setCode(data.result);
       setDisplayedCode(data.result);
-      setIframeSrc(`${process.env.NEXT_PUBLIC_API_URL}/${data.filePath}?t=${Date.now()}`);
+
+      setIframeSrc(
+        API_BASE + "/" + data.filePath + "?t=" + String(Date.now())
+      );
       setSelectedFile(data.filePath);
 
       const title = projectTitle || prompt;
@@ -137,7 +152,7 @@ export default function WorkspaceShell() {
 
       const updatedChat = [
         ...messages,
-        { sender: "user", text: prompt },
+        { sender: "user", text: title }, // store the title/prompt used
         { sender: "ai", text: "✅ Generation complete! Preview and code are ready." },
       ];
 
@@ -155,7 +170,7 @@ export default function WorkspaceShell() {
       localStorage.setItem("arjunai_history", JSON.stringify(updatedHistory));
       setHistory(updatedHistory);
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/save-chat', {
+      await fetch(API_BASE + "/api/save-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ file: data.filePath, chat: updatedChat }),
@@ -166,7 +181,7 @@ export default function WorkspaceShell() {
       if (err.name === "AbortError") {
         addLog("🛑 Generation stopped by user");
       } else {
-        addLog(`❌ Error: ${err.message}`);
+        addLog("❌ Error: " + err.message);
       }
     } finally {
       setIsGenerating(false);
@@ -198,12 +213,12 @@ export default function WorkspaceShell() {
     setPrompt("");
     setSelectedFile(item.file);
     setProjectTitle(item.prompt);
-    setLogs([`📂 Loaded project: ${item.prompt}`]);
-    setIframeSrc(`${process.env.NEXT_PUBLIC_API_URL}/${item.file}?t=${Date.now()}`);
+    setLogs(["📂 Loaded project: " + item.prompt]);
+    setIframeSrc(API_BASE + "/" + item.file + "?t=" + String(Date.now()));
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/project/chat?file=${encodeURIComponent(item.file)}`
+        API_BASE + "/api/project/chat?file=" + encodeURIComponent(item.file)
       );
       const data = await res.json();
       if (data.chat?.length) setMessages(data.chat);
@@ -214,7 +229,7 @@ export default function WorkspaceShell() {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${item.file}`);
+      const res = await fetch(API_BASE + "/" + item.file);
       const html = await res.text();
       setCode(html);
       setDisplayedCode(html);
@@ -231,6 +246,7 @@ export default function WorkspaceShell() {
       try {
         const title = projectTitle || "Untitled Project";
         const shortTitle = title.split(" ").slice(0, 4).join(" ");
+
         const localHistory = JSON.parse(localStorage.getItem("arjunai_history") || "[]");
         const updatedHistory = [
           {
@@ -245,7 +261,7 @@ export default function WorkspaceShell() {
         localStorage.setItem("arjunai_history", JSON.stringify(updatedHistory));
         setHistory(updatedHistory);
 
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/save-chat', {
+        await fetch(API_BASE + "/api/save-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ file: selectedFile, chat: messages }),
@@ -255,7 +271,7 @@ export default function WorkspaceShell() {
       }
     }, 5000);
     return () => clearInterval(interval);
-  }, [messages, selectedFile, projectTitle]);
+  }, [messages, selectedFile, projectTitle, API_BASE]);
 
   return (
     <div className="flex flex-col h-screen bg-[#0B1120] text-gray-100 overflow-hidden">
@@ -269,7 +285,13 @@ export default function WorkspaceShell() {
           transition={{ duration: 0.8 }}
           onClick={() => router.push("/builder")}
         >
-          <Image src="/arjunai-logo.svg" alt="ArjunAI Logo" width={42} height={42} priority />
+          <Image
+            src="/arjunai-logo.svg"
+            alt="ArjunAI Logo"
+            width={42}
+            height={42}
+            priority
+          />
           <div>
             <h1 className="text-lg text-[#00A8E8] font-semibold">ArjunAI</h1>
             <div className="text-xs text-gray-400">where prompts hit the target</div>
@@ -354,7 +376,7 @@ export default function WorkspaceShell() {
                 const newList = history.filter((x) => x.file !== it.file);
                 localStorage.setItem("arjunai_history", JSON.stringify(newList));
                 setHistory(newList);
-                setLogs([`🗑️ Deleted project: ${it.prompt}`]);
+                setLogs(["🗑️ Deleted project: " + (it.prompt || it.title || "")]);
               }}
             />
           </div>
@@ -413,7 +435,10 @@ export default function WorkspaceShell() {
         </div>
 
         {/* RIGHT PANEL */}
-        <div key={projectKey} className="w-1/2 bg-[#0d1528] border-l border-[#1d2840] overflow-hidden">
+        <div
+          key={projectKey}
+          className="w-1/2 bg-[#0d1528] border-l border-[#1d2840] overflow-hidden"
+        >
           {viewMode === "preview" && iframeSrc && (
             <iframe
               src={iframeSrc}
@@ -424,7 +449,7 @@ export default function WorkspaceShell() {
 
           {viewMode === "code" && (
             <motion.div
-              key={`code-${projectKey}`}
+              key={"code-" + projectKey}
               className="h-full overflow-y-auto bg-[#111a2e]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -437,7 +462,7 @@ export default function WorkspaceShell() {
 
           {viewMode === "editor" && (
             <Editor
-              key={`editor-${projectKey}`}
+              key={"editor-" + projectKey}
               height="100%"
               defaultLanguage="html"
               value={code}
@@ -455,7 +480,9 @@ export default function WorkspaceShell() {
       </main>
 
       {/* 🚀 Deploy Modal */}
-      {showDeploy && <DeployModal html={code || ""} onClose={() => setShowDeploy(false)} />}
+      {showDeploy && (
+        <DeployModal html={code || ""} onClose={() => setShowDeploy(false)} />
+      )}
     </div>
   );
 }

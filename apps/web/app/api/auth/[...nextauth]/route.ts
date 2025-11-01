@@ -1,9 +1,8 @@
-// apps/web/app/api/auth/[...nextauth]/route.ts
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 
-export const authOptions: NextAuthOptions = {
+const authHandler = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -14,13 +13,11 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
   ],
-
   pages: {
     signIn: "/login",
     signOut: "/login",
     error: "/login",
   },
-
   callbacks: {
     async redirect({ url, baseUrl }) {
       if (url.includes("/login") || url === baseUrl) {
@@ -31,15 +28,12 @@ export const authOptions: NextAuthOptions = {
       }
       return url.startsWith(baseUrl) ? url : `${baseUrl}/workspace`;
     },
-
-    async session({ session }) {
+    async session({ session, token }) {
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
-};
+});
 
-// ✅ Export the NextAuth handler with the same config
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+// ✅ Only export GET and POST — no extra exports
+export { authHandler as GET, authHandler as POST };

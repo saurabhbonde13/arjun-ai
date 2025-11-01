@@ -11,14 +11,11 @@ import archiver from "archiver";
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 // ✅ Serve generated HTML files
-app.use(
-  "/projects",
-  express.static(path.join(process.cwd(), "public", "projects"))
-);
+app.use("/projects", express.static(path.join(process.cwd(), "public", "projects")));
 
 const PORT = process.env.PORT || 5000;
 const CLAUDE_KEY = process.env.CLAUDE_API_KEY;
@@ -54,92 +51,97 @@ app.post("/api/delete", async (req: Request, res: Response) => {
 });
 
 // ------------------------------------------------------
-// 🧠 Generate Project (Restored Clarification Logic)
+// 🧠 Claude Project Generator (Final Clean Version)
 // ------------------------------------------------------
 app.post("/api/generate", async (req: Request, res: Response) => {
-  const { prompt } = req.body;
-  if (!prompt) return res.status(400).json({ error: "Missing prompt" });
-
-  const projectId = Date.now().toString();
-  const projectDir = path.join(process.cwd(), "public", "projects");
-  await fs.ensureDir(projectDir);
-  const filePath = path.join(projectDir, `${projectId}.html`);
-
-  console.log(`🧠 Generating website for: "${prompt}"`);
-
   try {
-    // 🧩 Step 1: Ask Claude to check if the prompt is clear
-    const clarifyRes = await client.messages.create({
-      model: CLAUDE_MODEL,
+    const { prompt } = req.body as { prompt?: string };
+    if (!prompt || !prompt.trim()) {
+      return res.status(400).json({ error: "Missing prompt" });
+    }
+
+    const projectId = Date.now().toString();
+    const projectDir = path.join(process.cwd(), "public", "projects");
+    await fs.ensureDir(projectDir);
+    const filePath = path.join(projectDir, `${projectId}.html`);
+
+    console.log(`🧠 Generating website for: "${prompt}"`);
+
+    // STEP 1: Ask for clarification if needed
+    const clarifyRes: any = await client.messages.create({
+      model: CLAUDE_MODEL!,
       max_tokens: 256,
       messages: [
         {
           role: "user",
-          content: `The user said: "${prompt}". 
-If the prompt is vague, respond ONLY in JSON like this:
-{"clarify": true, "question": "Ask one follow-up question"}.
-If it is clear enough to generate, respond ONLY in JSON:
-{"clarify": false}.`,
+          content: `User said: "${prompt}".
+If vague, respond ONLY with JSON: {"clarify": true, "question": "Ask one follow-up"}.
+If clear, respond ONLY with JSON: {"clarify": false}.`,
         },
       ],
     });
 
-    const clarifyTextBlock = clarifyRes.content.find(
-      (b: any) => b.type === "text"
-    ) as { text?: string } | undefined;
-    const clarifyText = clarifyTextBlock?.text?.trim() || "{}";
+    const clarifyText =
+      Array.isArray(clarifyRes.content)
+        ? clarifyRes.content
+            .filter((b: any) => b.type === "text")
+            .map((b: any) => b.text)
+            .join("\n")
+        : "";
 
-    let clarify: { clarify: boolean; question?: string };
+    let clarify: { clarify?: boolean; question?: string } = {};
     try {
       clarify = JSON.parse(clarifyText);
     } catch {
       clarify = { clarify: false };
     }
 
-    // 🧠 Step 2: If Claude requests clarification → ask user
     if (clarify.clarify && clarify.question) {
-      console.log("🧩 Claude needs clarification:", clarify.question);
+      console.log("🔍 Clarification needed:", clarify.question);
       return res.json({ question: clarify.question });
     }
 
-    // 🧩 Step 3: Generate full HTML website
-    const response = await client.messages.create({
-      model: CLAUDE_MODEL,
+    // STEP 2: Generate the actual HTML site
+    const genRes: any = await client.messages.create({
+      model: CLAUDE_MODEL!,
       max_tokens: 4096,
       messages: [
         {
           role: "user",
-          content: `Generate a complete, production-ready HTML5 website for this idea:
-"${prompt}"
-
+          content: `Generate a complete HTML5 website for this prompt: "${prompt}"
 Requirements:
-- Include full <html>, <head>, <style>, and <body>.
-- Use modern, elegant responsive design.
-- Avoid markdown or backticks.`,
+- Must include full <html>, <head>, <style>, <body>
+- Use responsive, elegant CSS
+- Must be self-contained (no external links or assets)
+- Return only HTML content`,
         },
       ],
     });
 
-    const textBlock = response.content.find(
-      (b: any) => b.type === "text"
-    ) as { text?: string } | undefined;
-    const html = textBlock?.text?.trim() || "";
+    const html =
+      Array.isArray(genRes.content)
+        ? genRes.content
+            .filter((b: any) => b.type === "text")
+            .map((b: any) => b.text)
+            .join("\n")
+            .trim()
+        : "";
 
     if (!html.includes("<html") || !html.includes("<body")) {
       throw new Error("Claude did not return valid HTML.");
     }
 
     await fs.writeFile(filePath, html);
-    console.log(`✅ Generated website saved at: ${filePath}`);
+    console.log(`✅ Website saved at: ${filePath}`);
 
-    res.json({
+    return res.json({
       success: true,
       result: html,
       filePath: `projects/${projectId}.html`,
     });
   } catch (error: any) {
     console.error("❌ Generation error:", error);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message || "Generation failed" });
   }
 });
 
@@ -279,12 +281,7 @@ app.post("/api/deploy/vercel", async (req: Request, res: Response) => {
       },
       body: JSON.stringify({
         name: projectName,
-        files: [
-          {
-            file: "index.html",
-            data: html,
-          },
-        ],
+        files: [{ file: "index.html", data: html }],
         target: "production",
       }),
     });
@@ -331,6 +328,8 @@ app.post("/api/deploy/zip", async (req: Request, res: Response) => {
   }
 });
 
+// ------------------------------------------------------
+// 🚀 Start Server
 // ------------------------------------------------------
 app.listen(PORT, () => {
   console.log(`🚀 Backend running: http://localhost:${PORT}`);
