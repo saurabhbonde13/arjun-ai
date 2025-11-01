@@ -1,23 +1,22 @@
 // apps/web/app/page.tsx
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import React from "react";
 
 export default async function HomePage() {
-  // ✅ Get the current session (NextAuth)
-  const session = await getServerSession();
+  // Get session using proper NextAuth options
+  const session = await getServerSession(authOptions);
 
-  // 🧭 If not logged in → go to /login
   if (!session) {
+    // Not logged in → go to /login
     redirect("/login");
+  } else {
+    // Logged in → go to /workspace
+    redirect("/workspace");
   }
 
-  // ✅ If logged in → go to /workspace
-  redirect("/workspace");
-
-  // Fallback (should never reach here)
   return (
-    <main className="flex h-screen items-center justify-center bg-[#0B1120] text-white">
+    <main className="flex items-center justify-center h-screen bg-[#0B1120] text-white">
       <p>Redirecting...</p>
     </main>
   );

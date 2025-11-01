@@ -3,10 +3,14 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
   const { pathname } = req.nextUrl;
 
-  // Allow public routes
+  // Allow public assets and login page
   if (
     pathname.startsWith("/login") ||
     pathname.startsWith("/_next") ||
@@ -16,13 +20,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // No token → redirect to login
+  // Redirect unauthenticated users to /login
   if (!token) {
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Authenticated → allow
+  // Allow authenticated users
   return NextResponse.next();
 }
 
