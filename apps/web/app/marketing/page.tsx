@@ -1,6 +1,6 @@
 "use client";
 
-import LandingClient from "./landingClient";
+import LandingClient from "./LandingClient";
 
 export default function MarketingPage() {
   return <LandingClient />;
