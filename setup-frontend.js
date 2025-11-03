@@ -78,7 +78,7 @@ export default function LandingPage() {
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/arjunai-logo.svg" width={40} height={40} alt="ArjunAI" />
+            <Image src="/arjunai-logo.png" width={40} height={40} alt="ArjunAI" />
             <div>
               <div className="text-xl font-semibold">ArjunAI</div>
               <div className="text-sm text-slate-300 -mt-0.5">Where prompts hit the target.</div>

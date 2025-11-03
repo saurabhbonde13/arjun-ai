@@ -23,7 +23,7 @@ export default function BuilderPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // ✅ Auth Guard — handle login redirect
+  // ✅ Auth Guard
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
@@ -42,7 +42,7 @@ export default function BuilderPage() {
     return null;
   }
 
-  // ✅ Main App State
+  // ✅ States
   const [chat, setChat] = useState<{ role: "user" | "claude"; content: string }[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState("");
@@ -62,12 +62,12 @@ export default function BuilderPage() {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://arjun-ai-backend.onrender.com";
 
-  // ✅ Scroll to bottom on new messages
+  // ✅ Auto-scroll chat
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [chat, claudeTyping]);
 
-  // ✅ Check backend connection
+  // ✅ Backend health
   useEffect(() => {
     const checkConnection = async () => {
       try {
@@ -82,13 +82,13 @@ export default function BuilderPage() {
     return () => clearInterval(interval);
   }, [API_BASE]);
 
-  // ✅ Load project history
+  // ✅ Load history
   useEffect(() => {
     const h = JSON.parse(localStorage.getItem("arjunai_history") || "[]");
     setHistory(h);
   }, []);
 
-  // ✅ Auto-start generation if prompt passed
+  // ✅ Auto-start generation
   useEffect(() => {
     const p = sessionStorage.getItem("builderPrompt");
     if (p) {
@@ -97,7 +97,7 @@ export default function BuilderPage() {
     }
   }, []);
 
-  // ✅ Stop generation manually
+  // ✅ Stop generation
   const handleStopGeneration = () => {
     if (controllerRef.current) {
       controllerRef.current.abort();
@@ -107,13 +107,10 @@ export default function BuilderPage() {
     if (claudeTypeIntervalRef.current) clearInterval(claudeTypeIntervalRef.current);
     setIsGenerating(false);
     setClaudeTyping("");
-    setChat((prev) => [
-      ...prev,
-      { role: "claude", content: "⚠️ Generation stopped by user." },
-    ]);
+    setChat((prev) => [...prev, { role: "claude", content: "⚠️ Generation stopped by user." }]);
   };
 
-  // ✅ Generate via Claude
+  // ✅ Generate new project
   const handleGenerate = async (prompt: string) => {
     if (isGenerating) return;
 
@@ -212,9 +209,15 @@ export default function BuilderPage() {
     setShowConfirm(false);
   };
 
+  // ✅ Logout fix
   const handleLogout = async () => {
-    localStorage.removeItem("arjunai_history");
-    await signOut({ redirect: true, callbackUrl: "/login" });
+    try {
+      localStorage.removeItem("arjunai_history");
+      await signOut({ redirect: true, callbackUrl: "/login" });
+      router.push("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   return (
@@ -230,7 +233,7 @@ export default function BuilderPage() {
             onClick={() => router.push("/workspace")}
           >
             <Image
-              src="/arjunai-logo.svg"
+              src="/arjunai-logo.png"
               alt="ArjunAI Logo"
               width={50}
               height={50}
@@ -310,9 +313,7 @@ export default function BuilderPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className={`flex w-full ${
-                msg.role === "user" ? "justify-end" : "justify-start"
-              }`}
+              className={`flex w-full ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`max-w-[80%] px-5 py-3 rounded-2xl text-[15px] ${
@@ -325,6 +326,7 @@ export default function BuilderPage() {
               </div>
             </motion.div>
           ))}
+
           {claudeTyping && (
             <div className="flex justify-start">
               <div className="max-w-[80%] px-5 py-3 rounded-2xl bg-[#131c34] text-gray-200 border border-[#1d2840]">
@@ -371,7 +373,7 @@ export default function BuilderPage() {
         </form>
       </div>
 
-      {/* Preview / Code Panel */}
+      {/* Preview/Code Panel */}
       <div className="w-1/2 bg-[#0d1528]">
         <div className="flex justify-end gap-2 p-3 border-b border-[#1d2840]">
           <button
@@ -411,7 +413,7 @@ export default function BuilderPage() {
         )}
       </div>
 
-      {/* Confirm Reset */}
+      {/* ✅ Confirmation Modal */}
       <AnimatePresence>
         {showConfirm && (
           <motion.div
@@ -431,7 +433,9 @@ export default function BuilderPage() {
                   <X className="w-4 h-4 text-gray-400 hover:text-gray-200" />
                 </button>
               </div>
-              <h2 className="text-lg font-semibold mb-3 text-[#00A8E8]">Start a new project?</h2>
+              <h2 className="text-lg font-semibold mb-3 text-[#00A8E8]">
+                Start a new project?
+              </h2>
               <p className="text-sm text-gray-400 mb-5">
                 Your current chat and preview will be cleared.
               </p>

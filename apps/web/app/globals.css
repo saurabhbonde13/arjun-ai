@@ -19,4 +19,25 @@ button {
 textarea,
 select {
   @apply focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)];
+  /* === Emergent-style UI enhancements (non-breaking) === */
+
+html { scroll-behavior: smooth; }
+body { background: #0F1116; color: #E6E8EC; }
+
+/***** Typography helpers *****/
+.h1 { @apply text-5xl md:text-6xl font-bold tracking-tight; }
+.h2 { @apply text-3xl md:text-4xl font-semibold; }
+.muted { @apply text-sm md:text-base text-zinc-400; }
+.lead { @apply text-lg md:text-xl text-zinc-300; }
+
+/***** Section spacing *****/
+.section { @apply py-16 md:py-24; }
+.container { @apply max-w-7xl mx-auto px-4; }
+
+/***** Card styling *****/
+.card { @apply rounded-2xl bg-zinc-900/60 ring-1 ring-white/10 shadow-md; }
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
 }

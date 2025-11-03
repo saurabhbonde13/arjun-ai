@@ -84,14 +84,30 @@ export default function WorkspaceShell() {
   };
 
   // ✅ Logout
-  const handleLogout = async () => {
-    try {
-      localStorage.removeItem("arjunai_history");
-      await signOut({ redirect: true, callbackUrl: "/login" });
-    } catch (err) {
-      console.error("Logout failed:", err);
+ // ✅ Clean logout function for BuilderPage and WorkspaceShell
+const handleLogout = async () => {
+  try {
+    // Clear all local & session storage to prevent auto redirects or cached session data
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Clear service workers cache (important for NextAuth/Vercel)
+    if ("caches" in window) {
+      const cacheNames = await caches.keys();
+      for (const name of cacheNames) {
+        await caches.delete(name);
+      }
     }
-  };
+
+    // Wait for NextAuth to finish signing out
+    await signOut({
+      redirect: true,
+      callbackUrl: "/login",
+    });
+  } catch (err) {
+    console.error("❌ Logout failed:", err);
+  }
+};
 
   // ✅ Typing for Claude messages (keep only for AI responses)
   const simulateTyping = async (text: string) => {
@@ -286,7 +302,7 @@ export default function WorkspaceShell() {
           onClick={() => router.push("/builder")}
         >
           <Image
-            src="/arjunai-logo.svg"
+            src="/arjunai-logo.png"
             alt="ArjunAI Logo"
             width={42}
             height={42}
